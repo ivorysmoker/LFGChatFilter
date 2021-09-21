@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: LFGChatFilter
+## Author: Ivorysmoker
+## Version: 1.0
+## SavedVariables: LFG_Settings
+## Notes: Simple ChatFilter to filter chat by keywords (LFM / LFG) to find raids/groups easier. 
+
+LFGChatFilter.lua
