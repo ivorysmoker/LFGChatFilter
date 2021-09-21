@@ -14,7 +14,7 @@ Interface / LFGChatFilter / Gearscore
 If you like the project and would like it to be further developed, you can support us via ... (not implemented yet)
 
 <b>Futur planning</b>
-We are considering preparing WTS / WTB / Guild list's
+We are considering preparing WTS / WTB / Guild list's<br>
 Filtering Raid's more specific and display only relevant Information.
 
 <b>Knowing Issues</b>
