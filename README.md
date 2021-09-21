@@ -11,7 +11,7 @@ Interface / LFGChatFilter / Show - LFGChatFilter<br>
 Interface / LFGChatFilter / Gearscore
 
 <b>Support</b><br>
-If you like the project and would like it to be further developed, you can support us via ... (not implemented yet)
+If you like the project and would like it to be further developed, you can support us via <a href='https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ'>this link</a>
 
 <b>Futur planning</b><br>
 We are considering preparing WTS / WTB / Guild list's<br>
