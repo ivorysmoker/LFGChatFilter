@@ -18,3 +18,6 @@ Filtering Raid's more specific and display only relevant Information.
 
 <b>Knowing Issues</b><br>
 The text overlap problem has yet to be fixed
+
+<b>Overview</b>
+![LFMChatFilter_LFMFrame](https://user-images.githubusercontent.com/10353810/134245751-152a9e0a-c5bf-473b-9f2f-46e6dca6e1e9.jpg)
