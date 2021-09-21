@@ -8,5 +8,5 @@ Automated Whisper for group request with integrated Gearscore and Class Selectio
 
 <b>Settings</b>
 
-Interface / LFGChatFilter / Show - LFGChatFilter
+Interface / LFGChatFilter / Show - LFGChatFilter<br>
 Interface / LFGChatFilter / Gearscore
