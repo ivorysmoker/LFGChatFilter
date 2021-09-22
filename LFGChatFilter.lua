@@ -275,8 +275,8 @@ end
 
 function UltimateSorterClearer()
 	
+	-- Sort and Clear LFM List
 	for i, v in ipairs(timerLFMList) do
-	
 		if v ~= nil then
 			if v + (displayTimeInSeconds) < time() then
 				
@@ -308,6 +308,39 @@ function UltimateSorterClearer()
 		end
 	end
 	
+	
+	-- Sort and Clear LFG List
+	for i, v in ipairs(timerLFGList) do
+		if v ~= nil then
+			if v + (displayTimeInSeconds) < time() then
+				
+				list[i]:SetText("")
+				timerLFGWidget[i]:SetText("")
+				LFGButtonList[i]:SetText("")
+				
+				-- sort list
+				local startIndex = i
+				for index = startIndex, table.getn(timerLFGList) do
+					
+					if index + 1 <= table.getn(timerLFGList) then
+					
+						list[index]:SetText(list[index+1]:GetText())
+						timerLFGWidget[index]:SetText(timerLFGWidget[index+1]:GetText())
+						LFGButtonList[index]:SetText(LFGButtonList[index+1]:GetText())
+						timerLFGList[index] = timerLFGList[index+1]
+					end
+					
+					if index == table.getn(timerLFGList) then
+						list[index]:SetText("")
+						timerLFGWidget[index]:SetText("")
+						LFGButtonList[index]:SetText("")
+						timerLFGList[index] = nil
+					end
+				end
+				
+			end
+		end
+	end
 	
 end
 
