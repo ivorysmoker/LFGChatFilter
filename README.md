@@ -14,7 +14,12 @@ If you like the project and would like it to be further developed, you can suppo
 
 <b>Futur planning</b><br>
 We are considering preparing WTS / WTB / Guild list's<br>
-Filtering Raid's more specific and display only relevant Information.
+Filtering Raid's more specific and display only relevant Information.<br>
+Automated Chat Window Setup and more...
+
+<b>Recommendet: Chat Window Setup</b><br>
+It is best to create a new Chat window and include all channel's for Group messages like "Global"<br>
+So you can disable all the Spam Channels on General Window for a clear overview.<br>
 
 <b>Knowing Issues</b><br>
 The text overlap problem has yet to be fixed
