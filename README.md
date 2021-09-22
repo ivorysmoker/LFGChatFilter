@@ -10,18 +10,18 @@ Interface / LFGChatFilter / Show - LFGChatFilter<br>
 Interface / LFGChatFilter / Gearscore
 
 <b>Support</b><br>
-If you like the project and would like it to be further developed, you can support us via <a href='https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ'>PayPal</a>.<br>Thank you for your support, we really appreciate it.
+If you like the project and would like it to be developed further, you can support us via <a href='https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ'>PayPal</a>.<br>Thank you for your support, we really appreciate it.
 
-<b>Futur planning</b><br>
-We are considering preparing WTS / WTB / Guild list's<br>
-Filtering Raid's more specific and display only relevant Information.<br>
+<b>Future planning</b><br>
+We are considering preparing WTS / WTB / Guild list<br>
+Filtering Raid's more specificly and show only relevant Information.<br>
 Automated Chat Window Setup and more...
 
-<b>Recommendet: Chat Window Setup</b><br>
-It is best to create a new Chat window and include all channel's for Group messages like "Global"<br>
+<b>Recommended: Chat Window Setup</b><br>
+It is best to create a new Chat window and include all channels for Group messages like "Global".<br>
 So you can disable all the Spam Channels on General Window for a clear overview.<br>
 
-<b>Knowing Issues</b><br>
+<b>Known Issues</b><br>
 The text overlap problem has yet to be fixed
 
 <b>Overview</b>
