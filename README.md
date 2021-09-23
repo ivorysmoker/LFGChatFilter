@@ -24,5 +24,6 @@ So you can disable all the Spam Channels on General Window for a clear overview.
 <h2>Known Issues</h2><br>
 The text overlap problem has yet to be fixed
 
-<h2>Overview</h2>
+<h2>Overview</h2><br>
+
 ![LFMChatFilter_LFMFrame](https://user-images.githubusercontent.com/10353810/134568919-deb92e10-e218-463a-8807-f3ffd4f1268b.jpg)
