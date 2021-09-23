@@ -9,8 +9,8 @@ Automated Whisper for group request with integrated Gearscore and Class Selectio
 Interface / LFGChatFilter / Show - LFGChatFilter<br>
 Interface / LFGChatFilter / Gearscore
 
-<h2>Support</h2
-If you like the project and would like it to be developed further, you can support us via <a href='https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ'>PayPal</a>.<br>Thank you for your support, we really appreciate it.
+<h2>Support</h2>
+If you like the project and would like it to be developed further, you can support us via<a href="https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ"> PayPal</a>.<br>Thank you for your support, we really appreciate it.
 
 <h2>Future planning</h2>
 We are considering preparing WTS / WTB / Guild list<br>
