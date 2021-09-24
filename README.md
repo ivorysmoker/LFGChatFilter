@@ -26,4 +26,4 @@ The text overlap problem has yet to be fixed
 
 <h2>Overview</h2>
 
-![LFMChatFilter_LFMFrame](https://user-images.githubusercontent.com/10353810/134568919-deb92e10-e218-463a-8807-f3ffd4f1268b.jpg)
+![LFMChatFilter_LFMFrame](https://user-images.githubusercontent.com/10353810/134683997-a8eaa483-d56e-4562-bf26-96c5ce31e4f2.jpg)
