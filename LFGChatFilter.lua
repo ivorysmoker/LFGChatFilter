@@ -113,11 +113,11 @@ getglobal(MySlider:GetName() .. 'High'):SetText('7000')
 MySlider:Show()
 
 --ADD Descripions Tab to Frame...
-function CreateTableDescription(frame)
-	local tableDescriptionFrame = CreateFrame("Frame", "Descriptions", frame)
+function CreateTableDescription(parentFrame)
+	local tableDescriptionFrame = CreateFrame("Frame", "Descriptions", parentFrame)
 	tableDescriptionFrame:SetFrameLevel(2) 
 	tableDescriptionFrame:SetSize(windowX, 25)
-	tableDescriptionFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
+	tableDescriptionFrame:SetPoint("TOPLEFT", parentFrame, "TOPLEFT", 0, 0)
 	tableDescriptionFrame:SetBackdrop({
 		bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
 		edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
@@ -129,17 +129,29 @@ function CreateTableDescription(frame)
 	local text1 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
 	text1:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 5, -5)
 	text1:SetText("Leader")
-	text1:SetTextColor(0, 0, 0, 1)
+	text1:SetTextColor(0, 0, 153, 1)
 
 	local text2 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
 	text2:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 80, -5)
 	text2:SetText("Time")
-	text2:SetTextColor(0, 0, 0, 1)
+	text2:SetTextColor(0, 0, 153, 1)
 
 	local text3 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
 	text3:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 140, -5)
 	text3:SetText("Message")
-	text3:SetTextColor(0, 0, 0, 1)
+	text3:SetTextColor(0, 0, 153, 1)
+	
+	
+	local verticalLine = tableDescriptionFrame:CreateTexture()
+	verticalLine:SetTexture(255, 255, 255, .8)
+	verticalLine:SetSize(0.5, windowY - 1) -- not sure why here 0.5 result in 1 (but fixxed the prob)
+	verticalLine:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 77, -1)
+	
+	local verticalLine2 = tableDescriptionFrame:CreateTexture()
+	verticalLine2:SetTexture(255, 255, 255, .8)
+	verticalLine2:SetSize(1, windowY - 1)
+	verticalLine2:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 135, -1)
+	
 	
 	tableDescriptionFrame:EnableMouse(false)
 end
@@ -234,7 +246,7 @@ local paddingTop2 = 0
 
 local startPositionY = -30
 
-local function CreateNewFont(frame, msg, sender)
+local function CreateNewTableRow(frame, msg, sender)
 	
 	local timestamp = time()
 	if frame == lfmFrame then
@@ -327,6 +339,7 @@ function UltimateSorterClearer()
 				
 				-- sort list
 				local startIndex = i
+				
 				for index = startIndex, table.getn(timerLFMList) do
 					
 					if index + 1 <= table.getn(timerLFMList) then
@@ -395,6 +408,17 @@ local function isempty(s)
   return s == nil or s == ''
 end
 
+function strSplit (inputStr, seperator)
+	if seperator == nil then
+		seperator = "%s"
+	end
+	local t={}
+	for str in string.gmatch(inputStr, "([^"..seperator.."]+)") do
+		table.insert(t, str)
+	end
+	return t
+end
+
 -- RegisterEvents
 local eventArray = { "CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_BATTLEGROUND", "CHAT_MSG_BATTLEGROUND_LEADER", "CHAT_MSG_PARTY", "CHAT_MSG_RAID_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_WHISPER", "CHAT_MSG_BN_WHISPER", "CHAT_MSG_CHANNEL", "CHAT_MSG_SAY", "ADDON_LOADED", "PLAYER_LOGIN" }
 for i, v in ipairs(eventArray) do
@@ -404,6 +428,15 @@ end
 -- PatternList's
 local PatternListLFMFrame = { "^LFM.*$", "^Lfm.*$", "^lfm.*$", "^LFm.*$", "^LF%s.*$", "^Lf%s.*$", "^lf%s.*$" }
 local PatternListLFGFrame = { "^LFG.*$", "^Lfg.*$", "^lfg.*$", "^LFg.*$" }
+
+-- Instances Pattern
+local PatternListInstances = { }
+PatternListInstances.ICC = "^.*ICC.*$|^.*icc.*$|^.*Icecrown Citadel.*$"
+PatternListInstances.TOC = "^.*TOC.*$|^.*toc.*$|^.*Trial of the Crusader.*$"
+PatternListInstances.VOA = "^.*VOA.*$|^.*voa.*$|^.*Vault of Archavon.*$"
+PatternListInstances.RS = "^.*RS.*$|^.*rs.*$|^.*Ruby Sanctum.*$"
+
+--message(strSplit(PatternListInstances["ICC"], "|")[2]) begins on 1 (0 maybe the whole?)
 
 -- Eventhandler 
 local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, chanNumber, chanName)
@@ -452,7 +485,7 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 					
 					if not emptySlot then
 						if not IsInList then
-							CreateNewFont(lfmFrame, msg, sender)
+							CreateNewTableRow(lfmFrame, msg, sender)
 						end
 					end
 					break
@@ -485,7 +518,7 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 					
 					if not emptySlot then
 						if not IsInList then
-							CreateNewFont(f, msg, sender)
+							CreateNewTableRow(f, msg, sender)
 						end
 					else
 						
