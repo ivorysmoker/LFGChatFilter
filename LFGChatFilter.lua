@@ -33,8 +33,9 @@ mainFrame:RegisterForDrag("LeftButton")
 mainFrame:SetScript("OnDragStart", mainFrame.StartMoving)
 mainFrame:SetScript("OnDragStop", mainFrame.StopMovingOrSizing)
 mainFrame:SetScript("OnHide", mainFrame.StopMovingOrSizing)
-local close = CreateFrame("Button", "YourCloseButtonName", mainFrame, "UIPanelCloseButton")
-close:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT")
+local close = CreateFrame("Button", "mainFrameCloseButton", mainFrame, "UIPanelCloseButton")
+close:SetFrameLevel(3) 
+close:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", 0, 2)
 close:SetScript("OnClick", function()
 	mainFrame:Hide()
 end)
@@ -111,6 +112,38 @@ getglobal(MySlider:GetName() .. 'Low'):SetText('1');
 getglobal(MySlider:GetName() .. 'High'):SetText('7000')
 MySlider:Show()
 
+--ADD Descripions Tab to Frame...
+function CreateTableDescription(frame)
+	local tableDescriptionFrame = CreateFrame("Frame", "Descriptions", frame)
+	tableDescriptionFrame:SetFrameLevel(2) 
+	tableDescriptionFrame:SetSize(windowX, 25)
+	tableDescriptionFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
+	tableDescriptionFrame:SetBackdrop({
+		bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+		edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+		edgeSize = 1,
+	})
+	tableDescriptionFrame:SetBackdropColor(25, 25, 25, .8)
+	tableDescriptionFrame:SetBackdropBorderColor(0, 0, 0)
+
+	local text1 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	text1:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 5, -5)
+	text1:SetText("Leader")
+	text1:SetTextColor(0, 0, 0, 1)
+
+	local text2 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	text2:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 80, -5)
+	text2:SetText("Time")
+	text2:SetTextColor(0, 0, 0, 1)
+
+	local text3 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	text3:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 140, -5)
+	text3:SetText("Message")
+	text3:SetTextColor(0, 0, 0, 1)
+	
+	tableDescriptionFrame:EnableMouse(false)
+end
+
 -- (1) LFGFrame
 local f = CreateFrame("Frame", "LFGFrame", mainFrame)
 f:SetSize(windowX, windowY)
@@ -126,6 +159,9 @@ f:EnableMouse(false)
 f:SetMovable(false)
 f:Hide()
 
+-- Table Descriptions...
+CreateTableDescription(f)
+
 -- (2) LFMFrame
 local lfmFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
 lfmFrame:SetSize(windowX, windowY)
@@ -140,6 +176,9 @@ lfmFrame:SetBackdropBorderColor(0, 0, 0)
 lfmFrame:EnableMouse(false)
 lfmFrame:SetMovable(false)
 lfmFrame:Hide()
+
+-- Table Descriptions...
+CreateTableDescription(lfmFrame)
 
 -- Menu Buttons
 local mainBtn = CreateFrame("Button", "Main", mainFrame, "UIPanelButtonGrayTemplate")
@@ -193,6 +232,8 @@ local paddingTop = 0
 local numOfCreatedFonts2 = 0
 local paddingTop2 = 0
 
+local startPositionY = -30
+
 local function CreateNewFont(frame, msg, sender)
 	
 	local timestamp = time()
@@ -208,18 +249,18 @@ local function CreateNewFont(frame, msg, sender)
 		local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 		
 		
-		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, numOfCreatedFonts * paddingTop)
+		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFonts * paddingTop))
 		button:RegisterForClicks("AnyDown")
 		button:SetScript("OnClick", function (self, btn, down)
 			InviteUnit(self:GetText()) 
 		end)
 
-		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, numOfCreatedFonts * paddingTop)
+		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFonts * paddingTop))
 		
 		--str = string.sub(msg, 0, 95)
 		widget:SetText(msg)
 		
-		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, numOfCreatedFonts * paddingTop)
+		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFonts * paddingTop))
 		timerWidget:SetText(date("%H:%M:%S", timestamp))
 		
 		button:SetSize(70, 15)
@@ -243,7 +284,7 @@ local function CreateNewFont(frame, msg, sender)
 		local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 		
 		
-		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, numOfCreatedFonts2 * paddingTop2)
+		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFonts2 * paddingTop2))
 		button:RegisterForClicks("AnyDown")
 		button:SetScript("OnClick", function (self, btn, down)
 			if classSpecialisation == "" then
@@ -253,10 +294,10 @@ local function CreateNewFont(frame, msg, sender)
 			SendChatMessage("Hi, do you need "..classSpecialisation.." "..className.." with "..LFG_Settings["gearscore"].." GS?", "WHISPER", "COMMON", self:GetText())
 		end)
 
-		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, numOfCreatedFonts2 * paddingTop2)
+		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFonts2 * paddingTop2))
 		widget:SetText(msg)
 		
-		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, numOfCreatedFonts2 * paddingTop2)
+		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFonts2 * paddingTop2))
 		timerWidget:SetText(date("%H:%M:%S", timestamp))
 		
 		button:SetSize(70, 15)
