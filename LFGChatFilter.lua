@@ -260,7 +260,9 @@ wtbBtn:SetText("WTB")
 --Hold the Table Items
 tableArray = {
 	[1] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
-	[2] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} }
+	[2] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
+	[3] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
+	[4] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} }
 }
 
 -- Hold Information to create Fonts...
@@ -325,18 +327,7 @@ local function CreateNewTableRow(frame, msg, sender, id)
 	table.insert(tableArray[id][3], timerWidget)
 	table.insert(tableArray[id][4], time())
 
-	
-	--tableArray[id][numOfCreatedFontsArr[id] * 4] = widget
-	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+1] = button
-	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+2] = timerWidget
-	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+3] = time()
-
 	numOfCreatedFontsArr[id] = numOfCreatedFontsArr[id] + 1
-	
-	--table.insert(tableArray[id][1], widget)
-	--table.insert(tableArray[id][2], button)
-	--table.insert(tableArray[id][3], timerWidget)
-	--table.insert(tableArray[id][4], time())
 end
 
 
@@ -411,6 +402,8 @@ end
 -- PatternList's
 local PatternListLFMFrame = { "^LFM.*$", "^Lfm.*$", "^lfm.*$", "^LFm.*$", "^LF%s.*$", "^Lf%s.*$", "^lf%s.*$" }
 local PatternListLFGFrame = { "^LFG.*$", "^Lfg.*$", "^lfg.*$", "^LFg.*$" }
+local PatternListWTS = { "^WTS.*$", "^Wts.*$", "^wts.*$", "^wTs.*$", "^wTS.*$", "^WTs.*$", "^WtS.*$"  }
+local PatternListWTB = { "^WTB.*$", "^Wtb.*$", "^wtb.*$", "^wTb.*$", "^wTB.*$", "^WTb.*$", "^WtB.*$" }
 
 -- Instances Pattern
 local PatternListInstances = { }
@@ -449,6 +442,7 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 			for i, pattern in ipairs(PatternListLFGFrame) do
 				if string.find(msg, pattern) then
 					local IsInList = false
+					local emptySlot = false
 					for i, v in ipairs(tableArray[1][1]) do
 						
 						if isempty(v:GetText()) then
