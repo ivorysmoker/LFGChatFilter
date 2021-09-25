@@ -1,4 +1,4 @@
-# LFGChatFilter V: 1.21
+# LFGChatFilter V: 1.22
 WoW 3.3.5a Addon - Simple ChatFilter to filter chat by keywords (LFM / LFG) to find raids/groups easier.
 
 <h2>Features</h2>
