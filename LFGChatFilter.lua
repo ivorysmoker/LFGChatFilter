@@ -113,7 +113,7 @@ getglobal(MySlider:GetName() .. 'High'):SetText('7000')
 MySlider:Show()
 
 --ADD Descripions Tab to Frame...
-local function CreateTableDescription(parentFrame)
+local function CreateTableDescription(parentFrame, descriptionCol1)
 	local tableDescriptionFrame = CreateFrame("Frame", "Descriptions", parentFrame)
 	tableDescriptionFrame:SetFrameLevel(2) 
 	tableDescriptionFrame:SetSize(windowX, 25)
@@ -128,7 +128,7 @@ local function CreateTableDescription(parentFrame)
 
 	local text1 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
 	text1:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 5, -5)
-	text1:SetText("Leader")
+	text1:SetText(descriptionCol1)
 	text1:SetTextColor(0, 0, 153, 1)
 
 	local text2 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
@@ -171,7 +171,7 @@ f:SetMovable(false)
 f:Hide()
 
 -- Table Descriptions...
-CreateTableDescription(f)
+CreateTableDescription(f, "Whisper")
 
 -- (2) LFMFrame
 local lfmFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
@@ -189,7 +189,7 @@ lfmFrame:SetMovable(false)
 lfmFrame:Hide()
 
 -- Table Descriptions...
-CreateTableDescription(lfmFrame)
+CreateTableDescription(lfmFrame, "Invite")
 
 -- (3) WTSFrame
 local wtsFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
@@ -207,7 +207,7 @@ wtsFrame:SetMovable(false)
 wtsFrame:Hide()
 
 -- Table Descriptions...
-CreateTableDescription(wtsFrame)
+CreateTableDescription(wtsFrame, "Seller")
 
 -- (4) WTBFrame
 local wtbFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
@@ -225,7 +225,7 @@ wtbFrame:SetMovable(false)
 wtbFrame:Hide()
 
 -- Table Descriptions...
-CreateTableDescription(wtbFrame)
+CreateTableDescription(wtbFrame, "Buyer")
 
 -- Menu Buttons
 local mainBtn = CreateFrame("Button", "Main", mainFrame, "UIPanelButtonGrayTemplate")
