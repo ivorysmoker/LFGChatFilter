@@ -113,7 +113,7 @@ getglobal(MySlider:GetName() .. 'High'):SetText('7000')
 MySlider:Show()
 
 --ADD Descripions Tab to Frame...
-function CreateTableDescription(parentFrame)
+local function CreateTableDescription(parentFrame)
 	local tableDescriptionFrame = CreateFrame("Frame", "Descriptions", parentFrame)
 	tableDescriptionFrame:SetFrameLevel(2) 
 	tableDescriptionFrame:SetSize(windowX, 25)
@@ -141,13 +141,12 @@ function CreateTableDescription(parentFrame)
 	text3:SetText("Message")
 	text3:SetTextColor(0, 0, 153, 1)
 	
-	
-	local verticalLine = tableDescriptionFrame:CreateTexture()
+	local verticalLine = tableDescriptionFrame:CreateTexture(nil, "BACKGROUND")
 	verticalLine:SetTexture(255, 255, 255, .8)
-	verticalLine:SetSize(0.5, windowY - 1) -- not sure why here 0.5 result in 1 (but fixxed the prob)
+	verticalLine:SetSize(1, windowY - 1)
 	verticalLine:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 77, -1)
 	
-	local verticalLine2 = tableDescriptionFrame:CreateTexture()
+	local verticalLine2 = tableDescriptionFrame:CreateTexture(nil, "BACKGROUND")
 	verticalLine2:SetTexture(255, 255, 255, .8)
 	verticalLine2:SetSize(1, windowY - 1)
 	verticalLine2:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 135, -1)
@@ -227,175 +226,159 @@ end)
 lfmBtn:SetSize(50, 50)
 lfmBtn:SetText("LFG")
 
+local wtsBtn = CreateFrame("Button", "WTS", mainFrame, "UIPanelButtonGrayTemplate")
+wtsBtn:SetPoint("TOPLEFT",f, "TOPLEFT", 165, 55)
+wtsBtn:RegisterForClicks("AnyDown")
+wtsBtn:SetScript("OnClick", function (self, button, down)
+	message("Not Included")
+end)
+wtsBtn:SetSize(50, 50)
+wtsBtn:SetText("WTS")
+
+local wtbBtn = CreateFrame("Button", "WTB", mainFrame, "UIPanelButtonGrayTemplate")
+wtbBtn:SetPoint("TOPLEFT",f, "TOPLEFT", 220, 55)
+wtbBtn:RegisterForClicks("AnyDown")
+wtbBtn:SetScript("OnClick", function (self, button, down)
+	message("Not Included")
+end)
+wtbBtn:SetSize(50, 50)
+wtbBtn:SetText("WTB")
+
 -- Fonts / Buttons
-list = {}
-lfmList = {}
+--list = {}
+--lfmList = {}
 
-timerLFGWidget = {}
-timerLFMWidget = {}
-timerLFGList = {}
-timerLFMList = {}
-LFGButtonList = {}
-LFMButtonList = {}
+--timerLFGWidget = {}
+--timerLFMWidget = {}
+--timerLFGList = {}
+--timerLFMList = {}
+--LFGButtonList = {}
+--LFMButtonList = {}
 
-local numOfCreatedFonts = 0
-local paddingTop = 0
+--Init Tables
 
-local numOfCreatedFonts2 = 0
-local paddingTop2 = 0
+--Hold the Table Items
+tableArray = {
+	[1] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
+	[2] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} }
+}
+
+-- Hold Information to create Fonts...
+numOfCreatedFontsArr = {}
+for i=1, 4 do
+	numOfCreatedFontsArr[i] = 0
+end
+
+rowPaddingTopArr = {}
+for i=1, 4 do
+	rowPaddingTopArr[i] = 0
+end
+
 
 local startPositionY = -30
 
-local function CreateNewTableRow(frame, msg, sender)
+--A Better Version...
+local function CreateNewTableRow(frame, msg, sender, id)
 	
 	local timestamp = time()
-	if frame == lfmFrame then
 	
-		if numOfCreatedFonts > 0 then
-			paddingTop = -15
-		end
+	if numOfCreatedFontsArr[id] > 0 then
+		rowPaddingTopArr[id] = -15
+		--rowPaddingTop = -15
+	end
+	
+	local widget = frame:CreateFontString("Button", "ARTWORK", "GameFontHighlight")
+	local timerWidget = frame:CreateFontString("Timer", "ARTWORK", "GameFontHighlight")
+	
+	local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	
+	
+	button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
+	button:RegisterForClicks("AnyDown")
+	button:SetScript("OnClick", function (self, btn, down)
 		
-		local widget = frame:CreateFontString("Button", "ARTWORK", "GameFontHighlight")
-		local timerWidget = frame:CreateFontString("Timer", "ARTWORK", "GameFontHighlight")
-		
-		local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-		
-		
-		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFonts * paddingTop))
-		button:RegisterForClicks("AnyDown")
-		button:SetScript("OnClick", function (self, btn, down)
+		if id == 1 then
 			InviteUnit(self:GetText()) 
-		end)
-
-		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFonts * paddingTop))
-		
-		--str = string.sub(msg, 0, 95)
-		widget:SetText(msg)
-		
-		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFonts * paddingTop))
-		timerWidget:SetText(date("%H:%M:%S", timestamp))
-		
-		button:SetSize(70, 15)
-		button:SetText(sender)
-		
-		numOfCreatedFonts = numOfCreatedFonts + 1
-		
-		table.insert(LFGButtonList, button)
-		
-		table.insert(list, widget)
-		
-		table.insert(timerLFGWidget, timerWidget)
-		table.insert(timerLFGList, time())
-	else
-		if numOfCreatedFonts2 > 0 then
-			paddingTop2 = -15
-		end
-		
-		local timerWidget = frame:CreateFontString("Button", "ARTWORK", "GameFontHighlight")
-		local widget = frame:CreateFontString("Button", "ARTWORK", "GameFontHighlight")
-		local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-		
-		
-		button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFonts2 * paddingTop2))
-		button:RegisterForClicks("AnyDown")
-		button:SetScript("OnClick", function (self, btn, down)
+		else
 			if classSpecialisation == "" then
 				print("Select the Class Specialisation at Main Window")
 				return
 			end
 			SendChatMessage("Hi, do you need "..classSpecialisation.." "..className.." with "..LFG_Settings["gearscore"].." GS?", "WHISPER", "COMMON", self:GetText())
-		end)
+		end
+	end)
 
-		widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFonts2 * paddingTop2))
-		widget:SetText(msg)
-		
-		timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFonts2 * paddingTop2))
-		timerWidget:SetText(date("%H:%M:%S", timestamp))
-		
-		button:SetSize(70, 15)
-		button:SetText(sender)
-		
-		numOfCreatedFonts2 = numOfCreatedFonts2 + 1
-		
-		table.insert(LFMButtonList, button)
-			
-		table.insert(lfmList, widget)
-		
-		table.insert(timerLFMWidget, timerWidget)
-		table.insert(timerLFMList, time())
-	end
+	widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
+	
+	--str = string.sub(msg, 0, 95)
+	widget:SetText(msg)
+	
+	timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
+	timerWidget:SetText(date("%H:%M:%S", timestamp))
+	
+	button:SetSize(70, 15)
+	button:SetText(sender)
+	
+	--numOfCreatedFonts = numOfCreatedFonts + 1
+	table.insert(tableArray[id][1], widget)
+	table.insert(tableArray[id][2], button)
+	table.insert(tableArray[id][3], timerWidget)
+	table.insert(tableArray[id][4], time())
+
+	
+	--tableArray[id][numOfCreatedFontsArr[id] * 4] = widget
+	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+1] = button
+	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+2] = timerWidget
+	--tableArray[id][(numOfCreatedFontsArr[id] * 4)+3] = time()
+
+	numOfCreatedFontsArr[id] = numOfCreatedFontsArr[id] + 1
+	
+	--table.insert(tableArray[id][1], widget)
+	--table.insert(tableArray[id][2], button)
+	--table.insert(tableArray[id][3], timerWidget)
+	--table.insert(tableArray[id][4], time())
 end
+
 
 function UltimateSorterClearer()
 	
+	for i,_ in ipairs(tableArray) do
+		id = i
 	-- Sort and Clear LFM List
-	for i, v in ipairs(timerLFMList) do
-		if v ~= nil then
-			if v + (displayTimeInSeconds) < time() then
-				
-				lfmList[i]:SetText("")
-				timerLFMWidget[i]:SetText("")
-				LFMButtonList[i]:SetText("")
-				
-				-- sort list
-				local startIndex = i
-				
-				for index = startIndex, table.getn(timerLFMList) do
+		for i, v in ipairs(tableArray[id][4]) do
+			if v ~= nil then
+				if v + (displayTimeInSeconds) < time() then
 					
-					if index + 1 <= table.getn(timerLFMList) then
+					tableArray[id][1][i]:SetText("")
+					tableArray[id][3][i]:SetText("")
+					tableArray[id][2][i]:SetText("")
 					
-						lfmList[index]:SetText(lfmList[index+1]:GetText())
-						timerLFMWidget[index]:SetText(timerLFMWidget[index+1]:GetText())
-						LFMButtonList[index]:SetText(LFMButtonList[index+1]:GetText())
-						timerLFMList[index] = timerLFMList[index+1]
+					-- sort list
+					local startIndex = i
+					
+					for index = startIndex, table.getn(tableArray[id][4]) do
+						
+						if index + 1 <= table.getn(tableArray[id][4]) then
+						
+							tableArray[id][1][index]:SetText(tableArray[id][1][index+1]:GetText())
+							tableArray[id][3][index]:SetText(tableArray[id][3][index+1]:GetText())
+							tableArray[id][2][index]:SetText(tableArray[id][2][index+1]:GetText())
+							tableArray[id][4][index] = tableArray[id][4][index+1]
+						end
+						
+						if index == table.getn(tableArray[id][4]) then
+							tableArray[id][1][index]:SetText("")
+							tableArray[id][3][index]:SetText("")
+							tableArray[id][2][index]:SetText("")
+							tableArray[id][4][index] = nil
+						end
 					end
 					
-					if index == table.getn(timerLFMList) then
-						lfmList[index]:SetText("")
-						timerLFMWidget[index]:SetText("")
-						LFMButtonList[index]:SetText("")
-						timerLFMList[index] = nil
-					end
 				end
-				
 			end
 		end
+	
 	end
-	
-	
-	-- Sort and Clear LFG List
-	for i, v in ipairs(timerLFGList) do
-		if v ~= nil then
-			if v + (displayTimeInSeconds) < time() then
-				
-				list[i]:SetText("")
-				timerLFGWidget[i]:SetText("")
-				LFGButtonList[i]:SetText("")
-				
-				-- sort list
-				local startIndex = i
-				for index = startIndex, table.getn(timerLFGList) do
-					
-					if index + 1 <= table.getn(timerLFGList) then
-					
-						list[index]:SetText(list[index+1]:GetText())
-						timerLFGWidget[index]:SetText(timerLFGWidget[index+1]:GetText())
-						LFGButtonList[index]:SetText(LFGButtonList[index+1]:GetText())
-						timerLFGList[index] = timerLFGList[index+1]
-					end
-					
-					if index == table.getn(timerLFGList) then
-						list[index]:SetText("")
-						timerLFGWidget[index]:SetText("")
-						LFGButtonList[index]:SetText("")
-						timerLFGList[index] = nil
-					end
-				end
-				
-			end
-		end
-	end
-	
 end
 
 function tablelength(T)
@@ -459,33 +442,34 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 	end
 	
 	UltimateSorterClearer()
+	
 	for i, v in ipairs(eventArray) do
 		if v == event then
 			
 			for i, pattern in ipairs(PatternListLFGFrame) do
 				if string.find(msg, pattern) then
 					local IsInList = false
-					for i, v in ipairs(list) do
+					for i, v in ipairs(tableArray[1][1]) do
 						
 						if isempty(v:GetText()) then
 								emptySlot = true
-								list[i]:SetText(msg)
-								timerLFGWidget[i]:SetText(date("%H:%M:%S", time()))
-								timerLFGList[i] = time()
-								LFGButtonList[i]:SetText(sender)
+								tableArray[1][1][i]:SetText(msg)
+								tableArray[1][4][i]:SetText(date("%H:%M:%S", time()))
+								tableArray[1][3][i] = time()
+								tableArray[1][2][i][i]:SetText(sender)
 							break
 						end
 						
 						if v:GetText() == msg then
 							IsInList = true
-							timerLFGWidget[i]:SetText(date("%H:%M:%S", time()))
+							tableArray[1][3][i]:SetText(date("%H:%M:%S", time()))
 							break
 						end
 					end
 					
 					if not emptySlot then
 						if not IsInList then
-							CreateNewTableRow(lfmFrame, msg, sender)
+							CreateNewTableRow(lfmFrame, msg, sender, 1)
 						end
 					end
 					break
@@ -499,26 +483,26 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 					
 					local IsInList = false
 					local emptySlot = false
-					for i, v in ipairs(lfmList) do
+					for i, v in ipairs(tableArray[2][1]) do
 						if isempty(v:GetText()) then
 								emptySlot = true
-								lfmList[i]:SetText(msg)
-								timerLFMList[i] = time()
-								timerLFMWidget[i]:SetText(date("%H:%M:%S", time()))
-								LFMButtonList[i]:SetText(sender)
+								tableArray[2][1][i]:SetText(msg)
+								tableArray[2][4][i] = time()
+								tableArray[2][3][i]:SetText(date("%H:%M:%S", time()))
+								tableArray[2][2][i]:SetText(sender)
 							break
 						end
 					
 						if v:GetText() == msg then
 							IsInList = true
-							timerLFMWidget[i]:SetText(date("%H:%M:%S", time()))
+							tableArray[2][3][i]:SetText(date("%H:%M:%S", time()))
 							break
 						end
 					end
 					
 					if not emptySlot then
 						if not IsInList then
-							CreateNewTableRow(f, msg, sender)
+							CreateNewTableRow(f, msg, sender, 2)
 						end
 					else
 						
