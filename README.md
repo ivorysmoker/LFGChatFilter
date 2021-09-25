@@ -14,7 +14,7 @@ If you like the project and would like it to be developed further, you can suppo
 
 <h2>Future planning</h2>
 We are considering preparing Guild list.<br>
-Extension for the LFM Table for finding easyier group members.<br>
+Extension for the LFM Table for finding easyier group members as group leader.<br>
 Filtering Raid's more specificly and show only relevant Information.<br>
 Automated Chat Window Setup and more...
 
