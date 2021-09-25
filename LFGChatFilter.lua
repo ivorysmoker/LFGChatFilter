@@ -448,8 +448,8 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 						if isempty(v:GetText()) then
 								emptySlot = true
 								tableArray[1][1][i]:SetText(msg)
-								tableArray[1][4][i]:SetText(date("%H:%M:%S", time()))
-								tableArray[1][3][i] = time()
+								tableArray[1][4][i] = time()
+								tableArray[1][3][i]:SetText(date("%H:%M:%S", time()))
 								tableArray[1][2][i]:SetText(sender)
 							break
 						end
