@@ -13,8 +13,8 @@ Interface / LFGChatFilter / Gearscore
 If you like the project and would like it to be developed further, you can support us via<a href="https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ"> PayPal</a>.<br>Thank you for your support, we really appreciate it.
 
 <h2>Future planning</h2>
-We are considering preparing Guild list<br>
-Group Leader helper<br>
+We are considering preparing Guild list.<br>
+Extension for the LFM Table for finding easyier group members.<br>
 Filtering Raid's more specificly and show only relevant Information.<br>
 Automated Chat Window Setup and more...
 
