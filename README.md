@@ -1,8 +1,8 @@
 # LFGChatFilter V: 1.3
-WoW 3.3.5a Addon - Simple ChatFilter to filter chat by keywords (LFM / LFG) to find raids/groups easier.
+WoW 3.3.5a Addon - Simple ChatFilter to filter chat by keywords (LFM / LFG / WTS / WTB) to find raids/groups/trades easier.
 
 <h2>Features</h2>
-Filters all (LFM/LFG) searches by group messages and lists them nicely.<br>
+Filters all (LFM/LFG/WTS/WTB) searches by group messages and lists them nicely.<br>
 Automated Whisper for group request with integrated Gearscore and Class Selection.
 
 <h2>Settings</h2>
@@ -13,7 +13,7 @@ Interface / LFGChatFilter / Gearscore
 If you like the project and would like it to be developed further, you can support us via<a href="https://www.paypal.com/donate?hosted_button_id=55TRLVG5K9ADQ"> PayPal</a>.<br>Thank you for your support, we really appreciate it.
 
 <h2>Future planning</h2>
-We are considering preparing WTS / WTB / Guild list<br>
+We are considering preparing Guild list<br>
 Filtering Raid's more specificly and show only relevant Information.<br>
 Automated Chat Window Setup and more...
 
