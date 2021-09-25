@@ -1,4 +1,4 @@
-# LFGChatFilter V: 1.31
+# LFGChatFilter v1.31
 WoW 3.3.5a Addon - Simple ChatFilter to filter chat by keywords (LFM / LFG / WTS / WTB) to find raids/groups/trades easier.
 
 <h2>Features</h2>
