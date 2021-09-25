@@ -191,6 +191,42 @@ lfmFrame:Hide()
 -- Table Descriptions...
 CreateTableDescription(lfmFrame)
 
+-- (3) WTSFrame
+local wtsFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
+wtsFrame:SetSize(windowX, windowY)
+wtsFrame:SetPoint("TOPLEFT")
+wtsFrame:SetBackdrop({
+	bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+	edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+	edgeSize = 1,
+})
+wtsFrame:SetBackdropColor(0, 0, 0, .5)
+wtsFrame:SetBackdropBorderColor(0, 0, 0)
+wtsFrame:EnableMouse(false)
+wtsFrame:SetMovable(false)
+wtsFrame:Hide()
+
+-- Table Descriptions...
+CreateTableDescription(wtsFrame)
+
+-- (4) WTBFrame
+local wtbFrame = CreateFrame("Frame", "LFMFrame", mainFrame)
+wtbFrame:SetSize(windowX, windowY)
+wtbFrame:SetPoint("TOPLEFT")
+wtbFrame:SetBackdrop({
+	bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+	edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+	edgeSize = 1,
+})
+wtbFrame:SetBackdropColor(0, 0, 0, .5)
+wtbFrame:SetBackdropBorderColor(0, 0, 0)
+wtbFrame:EnableMouse(false)
+wtbFrame:SetMovable(false)
+wtbFrame:Hide()
+
+-- Table Descriptions...
+CreateTableDescription(wtbFrame)
+
 -- Menu Buttons
 local mainBtn = CreateFrame("Button", "Main", mainFrame, "UIPanelButtonGrayTemplate")
 
@@ -200,6 +236,8 @@ mainBtn:SetScript("OnClick", function (self, button, down)
 	lfmFrame:Hide()
 	f:Hide()
 	mainFramePanel:Show()
+	wtsFrame:Hide()
+	wtbFrame:Hide()
 end)
 mainBtn:SetSize(50, 50)
 mainBtn:SetText("Main")
@@ -211,6 +249,8 @@ lfgBtn:SetScript("OnClick", function (self, button, down)
 	lfmFrame:Hide()
 	f:Show()
 	mainFramePanel:Hide()
+	wtsFrame:Hide()
+	wtbFrame:Hide()
 end)
 lfgBtn:SetSize(50, 50)
 lfgBtn:SetText("LFM")
@@ -222,6 +262,8 @@ lfmBtn:SetScript("OnClick", function (self, button, down)
 	f:Hide()
 	lfmFrame:Show()
 	mainFramePanel:Hide()
+	wtsFrame:Hide()
+	wtbFrame:Hide()
 end)
 lfmBtn:SetSize(50, 50)
 lfmBtn:SetText("LFG")
@@ -230,7 +272,11 @@ local wtsBtn = CreateFrame("Button", "WTS", mainFrame, "UIPanelButtonGrayTemplat
 wtsBtn:SetPoint("TOPLEFT",f, "TOPLEFT", 165, 55)
 wtsBtn:RegisterForClicks("AnyDown")
 wtsBtn:SetScript("OnClick", function (self, button, down)
-	message("Not Included")
+	f:Hide()
+	lfmFrame:Hide()
+	mainFramePanel:Hide()
+	wtsFrame:Show()
+	wtbFrame:Hide()
 end)
 wtsBtn:SetSize(50, 50)
 wtsBtn:SetText("WTS")
@@ -239,25 +285,17 @@ local wtbBtn = CreateFrame("Button", "WTB", mainFrame, "UIPanelButtonGrayTemplat
 wtbBtn:SetPoint("TOPLEFT",f, "TOPLEFT", 220, 55)
 wtbBtn:RegisterForClicks("AnyDown")
 wtbBtn:SetScript("OnClick", function (self, button, down)
-	message("Not Included")
+	f:Hide()
+	lfmFrame:Hide()
+	mainFramePanel:Hide()
+	wtsFrame:Hide()
+	wtbFrame:Show()
 end)
 wtbBtn:SetSize(50, 50)
 wtbBtn:SetText("WTB")
 
--- Fonts / Buttons
---list = {}
---lfmList = {}
 
---timerLFGWidget = {}
---timerLFMWidget = {}
---timerLFGList = {}
---timerLFMList = {}
---LFGButtonList = {}
---LFMButtonList = {}
-
---Init Tables
-
---Hold the Table Items
+--Init for Table Data Hold
 tableArray = {
 	[1] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
 	[2] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} },
@@ -265,7 +303,7 @@ tableArray = {
 	[4] = { [1] = {}, [2] = {}, [3] = {}, [4] = {} }
 }
 
--- Hold Information to create Fonts...
+--	maybe implement this on tablearray on futur...
 numOfCreatedFontsArr = {}
 for i=1, 4 do
 	numOfCreatedFontsArr[i] = 0
@@ -301,12 +339,16 @@ local function CreateNewTableRow(frame, msg, sender, id)
 		
 		if id == 1 then
 			InviteUnit(self:GetText()) 
-		else
+		elseif id == 2 then
 			if classSpecialisation == "" then
 				print("Select the Class Specialisation at Main Window")
 				return
 			end
 			SendChatMessage("Hi, do you need "..classSpecialisation.." "..className.." with "..LFG_Settings["gearscore"].." GS?", "WHISPER", "COMMON", self:GetText())
+		elseif id == 3 then
+			message("Not implemented")
+		else
+			message("Not implemented")
 		end
 	end)
 
@@ -470,7 +512,6 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 				end
 			end
 			--Find LFM
-			
 			for i, pattern in ipairs(PatternListLFMFrame) do
 				if string.find(msg, pattern) then
 					--Is in List?
@@ -505,6 +546,69 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 					break
 				end
 			end
+			--Find WTS
+			for i, pattern in ipairs(PatternListWTS) do
+				if string.find(msg, pattern) then
+					local IsInList = false
+					local emptySlot = false
+					for i, v in ipairs(tableArray[3][1]) do
+						
+						if isempty(v:GetText()) then
+								emptySlot = true
+								tableArray[3][1][i]:SetText(msg)
+								tableArray[3][4][i] = time()
+								tableArray[3][3][i]:SetText(date("%H:%M:%S", time()))
+								tableArray[3][2][i]:SetText(sender)
+							break
+						end
+						
+						if v:GetText() == msg then
+							IsInList = true
+							tableArray[3][3][i]:SetText(date("%H:%M:%S", time()))
+							break
+						end
+					end
+					
+					if not emptySlot then
+						if not IsInList then
+							CreateNewTableRow(wtsFrame, msg, sender, 3)
+						end
+					end
+					break
+				end
+			end
+			--Find WTS
+			for i, pattern in ipairs(PatternListWTB) do
+				if string.find(msg, pattern) then
+					local IsInList = false
+					local emptySlot = false
+					for i, v in ipairs(tableArray[4][1]) do
+						
+						if isempty(v:GetText()) then
+								emptySlot = true
+								tableArray[4][1][i]:SetText(msg)
+								tableArray[4][4][i] = time()
+								tableArray[4][3][i]:SetText(date("%H:%M:%S", time()))
+								tableArray[4][2][i]:SetText(sender)
+							break
+						end
+						
+						if v:GetText() == msg then
+							IsInList = true
+							tableArray[4][3][i]:SetText(date("%H:%M:%S", time()))
+							break
+						end
+					end
+					
+					if not emptySlot then
+						if not IsInList then
+							CreateNewTableRow(wtbFrame, msg, sender, 4)
+						end
+					end
+					break
+				end
+			end
+			
 		end
 	end
 end
