@@ -3,7 +3,7 @@ WoW 3.3.5a Addon - Simple ChatFilter to filter chat by keywords (LFM / LFG / WTS
 
 <h2>Features</h2>
 Filters all (LFM/LFG/WTS/WTB) searches by group messages and lists them nicely.<br>
-Automated Whisper for group request with integrated Gearscore and Class Selection.
+Automated Whisper for group request with integrated Gearscore and Class Selection.<br>
 Group Leader Helper (alhpa version)
 
 <h2>Settings</h2>
