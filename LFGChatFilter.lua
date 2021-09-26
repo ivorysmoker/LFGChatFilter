@@ -126,17 +126,17 @@ local function CreateTableDescription(parentFrame, descriptionCol1)
 	tableDescriptionFrame:SetBackdropColor(25, 25, 25, .8)
 	tableDescriptionFrame:SetBackdropBorderColor(0, 0, 0)
 
-	local text1 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	local text1 = tableDescriptionFrame:CreateFontString("Description1", "ARTWORK", "GameFontHighlight")
 	text1:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 5, -5)
 	text1:SetText(descriptionCol1)
 	text1:SetTextColor(0, 0, 153, 1)
 
-	local text2 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	local text2 = tableDescriptionFrame:CreateFontString("Description2", "ARTWORK", "GameFontHighlight")
 	text2:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 80, -5)
 	text2:SetText("Time")
 	text2:SetTextColor(0, 0, 153, 1)
 
-	local text3 = tableDescriptionFrame:CreateFontString("DescriptionLeader", "ARTWORK", "GameFontHighlight")
+	local text3 = tableDescriptionFrame:CreateFontString("Description3", "ARTWORK", "GameFontHighlight")
 	text3:SetPoint("TOPLEFT", tableDescriptionFrame, "TOPLEFT", 140, -5)
 	text3:SetText("Message")
 	text3:SetTextColor(0, 0, 153, 1)
@@ -242,7 +242,7 @@ end)
 mainBtn:SetSize(50, 50)
 mainBtn:SetText("Main")
 
-local lfgBtn = CreateFrame("Button", "LFM", mainFrame, "UIPanelButtonGrayTemplate")
+local lfgBtn = CreateFrame("Button", "LFMBtn", mainFrame, "UIPanelButtonGrayTemplate")
 lfgBtn:SetPoint("TOPLEFT",f, "TOPLEFT", 55, 55)
 lfgBtn:RegisterForClicks("AnyDown")
 lfgBtn:SetScript("OnClick", function (self, button, down)
@@ -471,7 +471,7 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 			if ( LFG_Settings[i] ) then LFG_Settings_Default[i] = LFG_Settings[i]; end
 		end
 		
-		MySlider:SetValue(LFG_Settings["gearscore"])
+		--MySlider:SetValue(LFG_Settings["gearscore"])
 		getglobal(MySlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
 		return
 	end
