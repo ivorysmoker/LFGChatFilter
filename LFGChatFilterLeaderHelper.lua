@@ -26,11 +26,11 @@ font1:SetText("Group Leader Options")
 
 local font2 = mainFrameChild:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 font2:SetPoint("TOPLEFT", mainFrameChild, "TOPLEFT", 2, -30)
-font2:SetText("Select Raid Instance")
+font2:SetText("Select Raid/Group Instance")
 
 local font3 = mainFrameChild:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 font3:SetPoint("TOPLEFT", mainFrameChild, "TOPLEFT", 2, -80)
-font3:SetText("Select Raid Size")
+font3:SetText("Select Raid/Group Size")
 
 local font3 = mainFrameChild:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 font3:SetPoint("TOPLEFT", mainFrameChild, "TOPLEFT", 2, -130)
@@ -166,7 +166,8 @@ checkboxHC:SetScript("OnClick",  function()
 	
 end)
 
-local raidsArray = {"Icecrown Citatel", "Trial of the Crusader", "Naxxramas", "The Ruby Sanctum", "Vault of Archavon"}
+local raidsArray = {"Icecrown Citatel", "Trial of the Crusader", "Naxxramas", "The Ruby Sanctum", "Vault of Archavon", 
+"The Forge of Souls", "Pit of Saron", "Halls of Reflection"}
 local selectedInstance = "Icecrown Citatel" -- A user-configurable setting
  -- Create the dropdown, and configure its appearance
  local dropDown = CreateFrame("FRAME", "WPDemoDropDown", mainFrameChild, "UIDropDownMenuTemplate")

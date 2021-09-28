@@ -16,7 +16,7 @@ local classGearScore = 0
 local className = localizedClass
 local classSpecialisation = ""
 
--- (Table Settings) do not over 80
+-- (Table Settings)
 local maxTextLengthBox = 80
 
 -- MainFrame
@@ -97,16 +97,27 @@ end)
 panelBtn:SetSize(150, 35)
 panelBtn:SetText("Show - LFGChatFilter")
 
-local MySlider = CreateFrame("Slider", "MySliderGlobalName", panel, "OptionsSliderTemplate")
-MySlider:SetWidth(100)
+local MySlider = CreateFrame("Slider", "MyInterfaceSlider", panel, "OptionsSliderTemplate")
+MySlider:SetWidth(200)
 MySlider:SetOrientation('HORIZONTAL')
 MySlider:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -70)
 MySlider:SetMinMaxValues(1, 7000)
 --MySlider:SetValue(1) -- SavedVariables Handle this onload...
 MySlider:SetValueStep(1)
-MySlider:SetScript("OnMouseDown", function(self, button)
-	LFG_Settings.gearscore = MySlider:GetValue()
-	getglobal(MySlider:GetName() .. 'Text'):SetText(LFG_Settings.gearscore);
+
+local IsMySliderOnMove = false
+MySlider:SetScript("OnUpdate", function(self, elapsed)
+	if IsMySliderOnMove then
+		LFG_Settings.gearscore = MySlider:GetValue()
+		getglobal(MySlider:GetName() .. 'Text'):SetText(LFG_Settings.gearscore);
+	end
+end)
+
+MySlider:SetScript("OnMouseDown", function(self, elapsed)
+	IsMySliderOnMove = true
+end)
+MySlider:SetScript("OnMouseUp", function(self, elapsed)
+	IsMySliderOnMove = false
 end)
 
 MySlider.tooltipText = 'Set Gearscore'
@@ -533,15 +544,28 @@ MySlider2:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -5, -45)
 MySlider2:SetMinMaxValues(0, 500)
 MySlider2:SetValue(0)
 MySlider2:SetValueStep(1)
-MySlider2:SetScript("OnMouseUp", function(self, button)
-	--print(MySlider2:GetValue())
-	 getglobal(self:GetName() .. 'Text'):SetText(MySlider2:GetValue())
-	 
-	Rebuild(1)
-	Rebuild(2)
-	Rebuild(3)
-	Rebuild(4)
+
+--Not the best option for performence reason but its ok for now...
+local IsSliderOnMove = false
+MySlider2:SetScript("OnUpdate", function(self, elapsed)
+	if IsSliderOnMove then
+		getglobal(self:GetName() .. 'Text'):SetText(self:GetValue())
+
+		Rebuild(1)
+		Rebuild(2)
+		Rebuild(3)
+		Rebuild(4)
+		
+	end
 end)
+MySlider2:SetScript("OnMouseDown", function(self, elapsed)
+	IsSliderOnMove = true
+end)
+MySlider2:SetScript("OnMouseUp", function(self, elapsed)
+	IsSliderOnMove = false
+end)
+
+
 getglobal(MySlider2:GetName() .. 'Text'):SetFontObject('GameFontNormalLeft')
 getglobal(MySlider2:GetName() .. 'Low'):SetText(''); --Sets the left-side slider text (default is "Low").
  getglobal(MySlider2:GetName() .. 'High'):SetText(''); --Sets the right-side slider text (default is "High").
@@ -605,8 +629,8 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 			if ( LFG_Settings[i] ) then LFG_Settings_Default[i] = LFG_Settings[i]; end
 		end
 		
-		--MySlider:SetValue(LFG_Settings["gearscore"])
-		getglobal(MySlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
+		MyInterfaceSlider:SetValue(LFG_Settings["gearscore"])
+		getglobal(MyInterfaceSlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
 		return
 	end
 	
