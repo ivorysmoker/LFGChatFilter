@@ -23,8 +23,8 @@ Automated Chat Window Setup and more...
 It is best to create a new Chat window and include all channels for Group messages like "Global".<br>
 So you can disable all the Spam Channels on General Window for a clear overview.<br>
 
-<h2>Known Issues</h2>
-The text overlap problem has yet to be fixed
+<h2>Issues found?</h2>
+You can report bugs here: https://github.com/ivorysmoker/LFGChatFilter/issues
 
 <h2>Overview</h2>
 
