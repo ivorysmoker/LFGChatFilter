@@ -4,7 +4,7 @@ LFG_Settings = {}
 LFG_Settings_Default = {}
 
 -- If the User repeat hes LFM/LFG Message the Timer would felt up
-local displayTimeInSeconds = 60
+local displayTimeInSeconds = 30
 
 -- (Window Resolution Settings)
 local windowX = 800
@@ -452,6 +452,18 @@ function Rebuild(tableId)
 	paddingTop = MyTableSlider:GetValue()
 	for i, f in ipairs(tableArray[tableId][1]) do
 		--message(MySlider2:GetValue())
+		--tableArray[tableId][1][i]:GetParent()
+		
+		if paddingTop > 13 then
+			tableArray[tableId][1][i]:Hide()
+			tableArray[tableId][2][i]:Hide()
+			tableArray[tableId][3][i]:Hide()
+		else
+			tableArray[tableId][1][i]:Show()
+			tableArray[tableId][2][i]:Show()
+			tableArray[tableId][3][i]:Show()
+		end
+		
 		tableArray[tableId][1][i]:SetPoint("TOPLEFT", tableArray[tableId][1][i]:GetParent(), "TOPLEFT", 140, startPositionY + paddingTop)
 		tableArray[tableId][2][i]:SetPoint("TOPLEFT", tableArray[tableId][2][i]:GetParent(), "TOPLEFT", 5, startPositionY + paddingTop)
 		tableArray[tableId][3][i]:SetPoint("TOPLEFT", tableArray[tableId][3][i]:GetParent(), "TOPLEFT", 80, startPositionY + paddingTop)
