@@ -16,8 +16,8 @@ local classGearScore = 0
 local className = localizedClass
 local classSpecialisation = ""
 
--- (Table Settings)
-local maxTextLengthBox = 90
+-- (Table Settings) do not over 80
+local maxTextLengthBox = 80
 
 -- MainFrame
 local mainFrame = CreateFrame("Frame", "MainFrame", UIParent)
