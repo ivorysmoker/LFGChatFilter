@@ -4,7 +4,7 @@ LFG_Settings = {}
 LFG_Settings_Default = {}
 
 -- If the User repeat hes LFM/LFG Message the Timer would felt up
-local displayTimeInSeconds = 30
+local displayTimeInSeconds = 60
 
 -- (Window Resolution Settings)
 local windowX = 800
@@ -529,19 +529,23 @@ local MySlider2 = CreateFrame("Slider", "MyTableSlider", mainFrame, "OptionsSlid
 MySlider2:SetHeight(350)
 MySlider2:SetWidth(20)
 MySlider2:SetOrientation('VERTICAL')
-MySlider2:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -25)
+MySlider2:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -5, -45)
 MySlider2:SetMinMaxValues(0, 500)
 MySlider2:SetValue(0)
 MySlider2:SetValueStep(1)
 MySlider2:SetScript("OnMouseUp", function(self, button)
 	--print(MySlider2:GetValue())
+	 getglobal(self:GetName() .. 'Text'):SetText(MySlider2:GetValue())
+	 
 	Rebuild(1)
 	Rebuild(2)
 	Rebuild(3)
 	Rebuild(4)
 end)
 getglobal(MySlider2:GetName() .. 'Text'):SetFontObject('GameFontNormalLeft')
-getglobal(MySlider2:GetName() .. 'High'):SetText('500')
+getglobal(MySlider2:GetName() .. 'Low'):SetText(''); --Sets the left-side slider text (default is "Low").
+ getglobal(MySlider2:GetName() .. 'High'):SetText(''); --Sets the right-side slider text (default is "High").
+ getglobal(MySlider2:GetName() .. 'Text'):SetText('0'); --Sets the "title" text (top-centre of slider).
 MySlider2:Show()
 
 function tablelength(T)
