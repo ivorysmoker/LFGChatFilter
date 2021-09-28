@@ -4,7 +4,7 @@ LFG_Settings = {}
 LFG_Settings_Default = {}
 
 -- If the User repeat hes LFM/LFG Message the Timer would felt up
-local displayTimeInSeconds = 30
+local displayTimeInSeconds = 60
 
 -- (Window Resolution Settings)
 local windowX = 800
