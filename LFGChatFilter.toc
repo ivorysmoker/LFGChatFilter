@@ -7,3 +7,4 @@
 
 LFGChatFilter.lua
 LFGChatFilterLeaderHelper.lua
+LFGChatFilterTest.lua

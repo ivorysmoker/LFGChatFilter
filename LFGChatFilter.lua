@@ -4,7 +4,7 @@ LFG_Settings = {}
 LFG_Settings_Default = {}
 
 -- If the User repeat hes LFM/LFG Message the Timer would felt up
-local displayTimeInSeconds = 60
+local displayTimeInSeconds = 30
 
 -- (Window Resolution Settings)
 local windowX = 800
@@ -15,6 +15,9 @@ local localizedClass, englishClass, classIndex  = UnitClass("player")
 local classGearScore = 0
 local className = localizedClass
 local classSpecialisation = ""
+
+-- (Table Settings)
+local maxTextLengthBox = 90
 
 -- MainFrame
 local mainFrame = CreateFrame("Frame", "MainFrame", UIParent)
@@ -317,23 +320,96 @@ end
 
 local startPositionY = -30
 
+
+--Build String with Valide Format
+local function NewLineStrinBuilder(incMessage, maxTextLength)
+
+	local msg = incMessage
+	local maxTextWidth = maxTextLength
+	local index = 0
+	local strBuilder = {}
+	local newString = ""
+	if string.len(msg) > maxTextWidth then
+		while(index < string.len(msg)) do
+			if string.len(msg) - index < maxTextWidth then
+				local subStr = string.sub(msg, index, string.len(msg));
+				--print("EndSubStr: "..subStr)
+				table.insert(strBuilder, subStr)
+				break
+			end
+		
+			if string.len(msg) - index >= maxTextWidth then
+				local subStr = string.sub(msg, index, index + maxTextWidth);
+				--print("SubStr: "..subStr)
+				table.insert(strBuilder, subStr.."|n")
+			end
+			
+			index = index + maxTextWidth
+		end
+--
+		for i, v in ipairs(strBuilder) do
+			newString = newString .. v
+		end
+	else
+		newString = msg
+	end
+
+	return newString
+end
+
+local escapes = {
+    ["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+    ["|r"] = "", -- color end
+    ["|H.-|h(.-)|h"] = "%1", -- links
+    ["|T.-|t"] = "", -- textures
+    ["{.-}"] = "", -- raid target icons
+	["|n"] = " ", -- new lines
+	["\n"] = " ", -- new lines userinput...
+	["|cffffff00"] = "" -- Achievments
+}
+local function unescape(str)
+    for k, v in pairs(escapes) do
+        str = gsub(str, k, v)
+    end
+    return str
+end
+
 --A Better Version...
 local function CreateNewTableRow(frame, msg, sender, id)
 	
 	local timestamp = time()
 	
 	if numOfCreatedFontsArr[id] > 0 then
-		rowPaddingTopArr[id] = -15
-		--rowPaddingTop = -15
+		--rowPaddingTopArr[id] = -15
+		rowPaddingTopArr[id] = rowPaddingTopArr[id] - tableArray[id][1][table.getn(tableArray[id][1])]:GetHeight()
 	end
 	
-	local widget = frame:CreateFontString("Button", "ARTWORK", "GameFontHighlight")
-	local timerWidget = frame:CreateFontString("Timer", "ARTWORK", "GameFontHighlight")
+	--Message
+	local widget = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+
+	local timerWidget = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 	
 	local button = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 	
 	
-	button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
+	widget:SetAllPoints(true);
+	widget:SetPoint("TOPLEFT", frame, "TOPLEFT", 140, startPositionY + rowPaddingTopArr[id])
+	widget:SetJustifyH("LEFT")
+	widget:SetJustifyV("TOP")
+	--widget:SetWidth(windowX - 140)
+	widget:SetNonSpaceWrap(false)
+	widget:SetHeight(400)
+	--widget:SetFrameLevel(3)
+	--message(msg)
+	--widget:SetSize(windowX - 140, 11)
+		--NewLineStrinBuilder(unescape(msg), 100)
+		--message(unescape(msg))
+	widget:SetText(NewLineStrinBuilder(unescape(msg), maxTextLengthBox))
+	widget:SetHeight(widget:GetStringHeight())
+	--message(widget:CanNonSpaceWrap())
+	
+	
+	button:SetPoint("TOPLEFT",frame, "TOPLEFT", 5, startPositionY + rowPaddingTopArr[id])
 	button:RegisterForClicks("AnyDown")
 	button:SetScript("OnClick", function (self, btn, down)
 		
@@ -351,13 +427,9 @@ local function CreateNewTableRow(frame, msg, sender, id)
 			message("Not implemented")
 		end
 	end)
-
-	widget:SetPoint("TOPLEFT",frame, "TOPLEFT", 140, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
 	
-	--str = string.sub(msg, 0, 95)
-	widget:SetText(msg)
 	
-	timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + (numOfCreatedFontsArr[id] * rowPaddingTopArr[id]))
+	timerWidget:SetPoint("TOPLEFT",frame, "TOPLEFT", 80, startPositionY + rowPaddingTopArr[id])
 	timerWidget:SetText(date("%H:%M:%S", timestamp))
 	
 	button:SetSize(70, 15)
@@ -370,6 +442,25 @@ local function CreateNewTableRow(frame, msg, sender, id)
 	table.insert(tableArray[id][4], time())
 
 	numOfCreatedFontsArr[id] = numOfCreatedFontsArr[id] + 1
+end
+
+
+function Rebuild(tableId)
+
+
+	local paddingTop = 0 
+	paddingTop = MyTableSlider:GetValue()
+	for i, f in ipairs(tableArray[tableId][1]) do
+		--message(MySlider2:GetValue())
+		tableArray[tableId][1][i]:SetPoint("TOPLEFT", tableArray[tableId][1][i]:GetParent(), "TOPLEFT", 140, startPositionY + paddingTop)
+		tableArray[tableId][2][i]:SetPoint("TOPLEFT", tableArray[tableId][2][i]:GetParent(), "TOPLEFT", 5, startPositionY + paddingTop)
+		tableArray[tableId][3][i]:SetPoint("TOPLEFT", tableArray[tableId][3][i]:GetParent(), "TOPLEFT", 80, startPositionY + paddingTop)
+		
+		paddingTop = paddingTop - tableArray[tableId][1][i]:GetHeight()
+		--print(paddingTop)
+	end
+	rowPaddingTopArr[tableId] = paddingTop
+
 end
 
 
@@ -392,8 +483,13 @@ function UltimateSorterClearer()
 					for index = startIndex, table.getn(tableArray[id][4]) do
 						
 						if index + 1 <= table.getn(tableArray[id][4]) then
-						
+
+							--ChangeTextWorked(tableArray[id][1][index], tableArray[id][1][index+1]:GetText(), id)
+							tableArray[id][1][index]:SetHeight(400)
 							tableArray[id][1][index]:SetText(tableArray[id][1][index+1]:GetText())
+							tableArray[id][1][index]:SetHeight(tableArray[id][1][index]:GetStringHeight())
+							--ChangeText(tableArray[id][1][index], tableArray[id][1][index+1]:GetText(), id)
+							
 							tableArray[id][3][index]:SetText(tableArray[id][3][index+1]:GetText())
 							tableArray[id][2][index]:SetText(tableArray[id][2][index+1]:GetText())
 							tableArray[id][4][index] = tableArray[id][4][index+1]
@@ -404,6 +500,8 @@ function UltimateSorterClearer()
 							tableArray[id][3][index]:SetText("")
 							tableArray[id][2][index]:SetText("")
 							tableArray[id][4][index] = nil
+							
+							Rebuild(id)
 						end
 					end
 					
@@ -413,6 +511,26 @@ function UltimateSorterClearer()
 	
 	end
 end
+
+--Scrollbar for Table Content
+local MySlider2 = CreateFrame("Slider", "MyTableSlider", mainFrame, "OptionsSliderTemplate")
+MySlider2:SetHeight(350)
+MySlider2:SetWidth(20)
+MySlider2:SetOrientation('VERTICAL')
+MySlider2:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -25)
+MySlider2:SetMinMaxValues(0, 500)
+MySlider2:SetValue(0)
+MySlider2:SetValueStep(1)
+MySlider2:SetScript("OnMouseUp", function(self, button)
+	--print(MySlider2:GetValue())
+	Rebuild(1)
+	Rebuild(2)
+	Rebuild(3)
+	Rebuild(4)
+end)
+getglobal(MySlider2:GetName() .. 'Text'):SetFontObject('GameFontNormalLeft')
+getglobal(MySlider2:GetName() .. 'High'):SetText('500')
+MySlider2:Show()
 
 function tablelength(T)
   local count = 0
@@ -489,14 +607,27 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 						
 						if isempty(v:GetText()) then
 								emptySlot = true
-								tableArray[1][1][i]:SetText(msg)
+								
+								--ChangeText(tableArray[1][1][i], StringBuilder(msg), 1)
+								--tableArray[1][1][i]:SetHeight(400)
+								--tableArray[1][1][i]:SetText(NewLineStrinBuilder(msg, 100))
+								--tableArray[1][1][i]:SetHeight(tableArray[1][1][i]:GetStringHeight())
+								--Rebuild(1)
+								tableArray[1][1][i]:SetHeight(400)
+								tableArray[1][1][i]:SetText(NewLineStrinBuilder(unescape(msg), maxTextLengthBox))
+								tableArray[1][1][i]:SetHeight(tableArray[1][1][i]:GetStringHeight())
+								Rebuild(1)
+								
 								tableArray[1][4][i] = time()
 								tableArray[1][3][i]:SetText(date("%H:%M:%S", time()))
 								tableArray[1][2][i]:SetText(sender)
 							break
 						end
 						
-						if v:GetText() == msg then
+						--print(v:GetText())
+						--print(msg)
+						
+						if NewLineStrinBuilder(unescape(msg), maxTextLengthBox) == v:GetText()then
 							IsInList = true
 							tableArray[1][3][i]:SetText(date("%H:%M:%S", time()))
 							break
@@ -521,16 +652,30 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 					for i, v in ipairs(tableArray[2][1]) do
 						if isempty(v:GetText()) then
 								emptySlot = true
-								tableArray[2][1][i]:SetText(msg)
+								
+								--tableArray[2][1][i]:SetHeight(400)
+								--tableArray[2][1][i]:SetText(NewLineStrinBuilder(msg, 100))
+								--tableArray[2][1][i]:SetHeight(tableArray[2][1][i]:GetStringHeight())
+								--Rebuild(2)
+								--ChangeText(tableArray[2][1][i], StringBuilder(msg), 2)
+								tableArray[2][1][i]:SetHeight(400)
+								tableArray[2][1][i]:SetText(NewLineStrinBuilder(unescape(msg), maxTextLengthBox))
+								tableArray[2][1][i]:SetHeight(tableArray[2][1][i]:GetStringHeight())
+								Rebuild(2)
+								
+								
 								tableArray[2][4][i] = time()
 								tableArray[2][3][i]:SetText(date("%H:%M:%S", time()))
 								tableArray[2][2][i]:SetText(sender)
 							break
 						end
 					
-						if v:GetText() == msg then
+						--print(v:GetText())
+						-- Update Time
+						if NewLineStrinBuilder(unescape(msg), maxTextLengthBox) == v:GetText() then
 							IsInList = true
 							tableArray[2][3][i]:SetText(date("%H:%M:%S", time()))
+							tableArray[2][4][i] = time()
 							break
 						end
 					end
@@ -555,16 +700,22 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 						
 						if isempty(v:GetText()) then
 								emptySlot = true
-								tableArray[3][1][i]:SetText(msg)
+								
+								tableArray[3][1][i]:SetHeight(400)
+								tableArray[3][1][i]:SetText(NewLineStrinBuilder(unescape(msg), maxTextLengthBox))
+								tableArray[3][1][i]:SetHeight(tableArray[3][1][i]:GetStringHeight())
+								Rebuild(3)
+								--tableArray[3][1][i]:SetText(msg)
 								tableArray[3][4][i] = time()
 								tableArray[3][3][i]:SetText(date("%H:%M:%S", time()))
 								tableArray[3][2][i]:SetText(sender)
 							break
 						end
 						
-						if v:GetText() == msg then
+						if NewLineStrinBuilder(unescape(msg), maxTextLengthBox) == v:GetText() then
 							IsInList = true
 							tableArray[3][3][i]:SetText(date("%H:%M:%S", time()))
+							tableArray[3][4][i] = time()
 							break
 						end
 					end
@@ -586,16 +737,22 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 						
 						if isempty(v:GetText()) then
 								emptySlot = true
-								tableArray[4][1][i]:SetText(msg)
+								
+								tableArray[4][1][i]:SetHeight(400)
+								tableArray[4][1][i]:SetText(NewLineStrinBuilder(unescape(msg), maxTextLengthBox))
+								tableArray[4][1][i]:SetHeight(tableArray[4][1][i]:GetStringHeight())
+								Rebuild(4)
+								--tableArray[4][1][i]:SetText(msg)
 								tableArray[4][4][i] = time()
 								tableArray[4][3][i]:SetText(date("%H:%M:%S", time()))
 								tableArray[4][2][i]:SetText(sender)
 							break
 						end
 						
-						if v:GetText() == msg then
+						if NewLineStrinBuilder(unescape(msg), maxTextLengthBox) == v:GetText() then
 							IsInList = true
 							tableArray[4][3][i]:SetText(date("%H:%M:%S", time()))
+							tableArray[4][4][i] = time()
 							break
 						end
 					end

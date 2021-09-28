@@ -101,8 +101,8 @@ end)
 local checkbox4 = CreateFrame("CheckButton", "checkbox4", mainFrameChild, "ChatConfigCheckButtonTemplate")
 checkbox4:SetWidth(25)
 checkbox4:SetPoint("TOPLEFT", mainFrameChild, "TOPLEFT", 5, -250)
-getglobal(checkbox4:GetName() .. 'Text'):SetText("P")
-checkbox4:SetText("P")
+getglobal(checkbox4:GetName() .. 'Text'):SetText("Primordials")
+checkbox4:SetText("Primordials")
 checkbox4:SetScript("OnClick",  function()
 	if LootRules.P then
 		LootRules.P = false
@@ -133,6 +133,7 @@ checkboxNorm:SetWidth(25)
 checkboxNorm:SetPoint("TOPLEFT", mainFrameChild, "TOPLEFT", 5, -330)
 getglobal(checkbox6:GetName() .. 'Text'):SetText("Normal")
 checkboxNorm:SetText("Normal")
+checkboxNorm:SetChecked(true)
 checkboxNorm:SetScript("OnClick",  function()
 	
 	if not checkbox6:GetChecked() then
@@ -165,7 +166,7 @@ checkboxHC:SetScript("OnClick",  function()
 	
 end)
 
-local raidsArray = {"Icecrown Citatel", "Trial of the Crusader", "Naxxramas", "The Ruby Sanctum"}
+local raidsArray = {"Icecrown Citatel", "Trial of the Crusader", "Naxxramas", "The Ruby Sanctum", "Vault of Archavon"}
 local selectedInstance = "Icecrown Citatel" -- A user-configurable setting
  -- Create the dropdown, and configure its appearance
  local dropDown = CreateFrame("FRAME", "WPDemoDropDown", mainFrameChild, "UIDropDownMenuTemplate")
