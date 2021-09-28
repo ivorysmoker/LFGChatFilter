@@ -15,9 +15,15 @@ If you like the project and would like it to be developed further, you can suppo
 
 <h2>Future planning</h2>
 We are considering preparing Guild list.<br>
-Extension for the LFM Table for finding easyier group members as group leader.<br>
+Group Leader Tool Extensions<br>
+  - List for Reserved Items.<br>
+  - Integrade min Gearscore.<br>
 Filtering Raid's more specificly and show only relevant Information.<br>
 Automated Chat Window Setup and more...
+
+<h2>Plans we alredy did</h2>
+- Extension for the LFM Table for finding easyier group members as group leader.<br>
+- Included WTS and WTB Tables
 
 <h2>Recommended: Chat Window Setup</h2>
 It is best to create a new Chat window and include all channels for Group messages like "Global".<br>
