@@ -25,6 +25,9 @@ Automated Chat Window Setup and more...
 - Extension for the LFM Table for finding easyier group members as group leader.<br>
 - Included WTS and WTB Tables
 
+<h2>Recommended: GearScoreLite v3.04</h2>
+If you have GearScoreLite v3x04 installed, it will automatically read it's settings and use your real gearscore. If you don't have it installed, it will load the old version but you will have to set the gearscore yourself.
+
 <h2>Recommended: Chat Window Setup</h2>
 It is best to create a new Chat window and include all channels for Group messages like "Global".<br>
 So you can disable all the Spam Channels on General Window for a clear overview.<br>
