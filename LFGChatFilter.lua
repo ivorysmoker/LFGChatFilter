@@ -12,6 +12,7 @@ local windowY = 400
 
 -- (Used for SavedVariables LFG_Settings)
 local localizedClass, englishClass, classIndex  = UnitClass("player")
+local playerName, realm = UnitName("player")
 local classGearScore = 0
 local className = localizedClass
 local classSpecialisation = ""
@@ -97,7 +98,7 @@ end)
 panelBtn:SetSize(150, 35)
 panelBtn:SetText("Show - LFGChatFilter")
 
-local MySlider = CreateFrame("Slider", "MyInterfaceSlider", panel, "OptionsSliderTemplate")
+local MySlider = CreateFrame("Slider", "LFGChatFilter_InterfaceSlider", panel, "OptionsSliderTemplate")
 MySlider:SetWidth(200)
 MySlider:SetOrientation('HORIZONTAL')
 MySlider:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -70)
@@ -594,7 +595,7 @@ function strSplit (inputStr, seperator)
 end
 
 -- RegisterEvents
-local eventArray = { "CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_BATTLEGROUND", "CHAT_MSG_BATTLEGROUND_LEADER", "CHAT_MSG_PARTY", "CHAT_MSG_RAID_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_WHISPER", "CHAT_MSG_BN_WHISPER", "CHAT_MSG_CHANNEL", "CHAT_MSG_SAY", "ADDON_LOADED", "PLAYER_LOGIN" }
+local eventArray = { "CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_BATTLEGROUND", "CHAT_MSG_BATTLEGROUND_LEADER", "CHAT_MSG_PARTY", "CHAT_MSG_RAID_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_WHISPER", "CHAT_MSG_BN_WHISPER", "CHAT_MSG_CHANNEL", "CHAT_MSG_SAY", "CHAT_MSG_YELL", "ADDON_LOADED", "PLAYER_LOGIN" }
 for i, v in ipairs(eventArray) do
 	f:RegisterEvent(v)
 end
@@ -613,7 +614,7 @@ PatternListInstances.VOA = "^.*VOA.*$|^.*voa.*$|^.*Vault of Archavon.*$"
 PatternListInstances.RS = "^.*RS.*$|^.*rs.*$|^.*Ruby Sanctum.*$"
 
 --message(strSplit(PatternListInstances["ICC"], "|")[2]) begins on 1 (0 maybe the whole?)
-
+local IsGearScoreLiteLoaded = false
 -- Eventhandler 
 local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, chanNumber, chanName)
 
@@ -622,15 +623,33 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 			LFG_Settings.gearscore = 500
 		end
 		
-		return
-	end
-	if event == "ADDON_LOADED" then
-		for i, v in pairs(LFG_Settings) do 
-			if ( LFG_Settings[i] ) then LFG_Settings_Default[i] = LFG_Settings[i]; end
+		
+		if IsAddOnLoaded("GearScoreLite") then
+			local pGearScore = GearScore_GetScore(playerName, "player")
+			LFGChatFilter_InterfaceSlider:SetValue(pGearScore)
+			getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'Text'):SetText(tostring(pGearScore));
+			--getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'High'):SetText(tostring(pGearScore));
+
+		else
+			-- alternation if gearscorelite not found...
+			LFGChatFilter_InterfaceSlider:SetValue(LFG_Settings["gearscore"])
+			getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
 		end
 		
-		MyInterfaceSlider:SetValue(LFG_Settings["gearscore"])
-		getglobal(MyInterfaceSlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
+		return
+	end
+	
+	if event == "ADDON_LOADED" then
+		-- using default settings to work with savedvars without saving them...
+		if arg1 == "LFGChatFilter" then
+			for i, v in pairs(LFG_Settings) do 
+				if ( LFG_Settings[i] ) then LFG_Settings_Default[i] = LFG_Settings[i]; end
+			end
+
+			LFGChatFilter_InterfaceSlider:SetValue(LFG_Settings["gearscore"])
+			getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'Text'):SetText(LFG_Settings["gearscore"]);
+		end
+		
 		return
 	end
 	
