@@ -624,7 +624,7 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 		end
 		
 		
-		if IsAddOnLoaded("GearScoreLite") then
+		if IsAddOnLoaded("GearScoreLite") or IsAddOnLoaded("GearScore") then
 			local pGearScore = GearScore_GetScore(playerName, "player")
 			LFGChatFilter_InterfaceSlider:SetValue(pGearScore)
 			getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'Text'):SetText(tostring(pGearScore));
