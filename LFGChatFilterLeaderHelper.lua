@@ -227,12 +227,15 @@ local button = CreateFrame("Button", nil, mainFrameChild, "UIPanelButtonTemplate
 button:SetPoint("CENTER", mainFrameChild, "BOTTOM", 0, 15)
 button:RegisterForClicks("AnyDown")
 button:SetScript("OnClick", function (self, btn, down)
+
 	
 	if not SearchedSpecialisiation.Tank and not SearchedSpecialisiation.Damage and not SearchedSpecialisiation.Heal then
-		print("Select roles")
+		print("Select roles before you can search for Members")
 		return
 	end
 
+	print("Search for Members...")
+	
 	local channelCount = GetNumDisplayChannels();
 	local LootRulesString = "Reserved: "
 	if LootRules.BOE then
@@ -243,6 +246,10 @@ button:SetScript("OnClick", function (self, btn, down)
 		LootRulesString = LootRulesString.."Primortials"
 	end
 	
+	if LootRulesString == "Reserved: " then
+		LootRulesString = ""
+	end
+	
 	local selectedDifficulty = ""
 	if InstanceDifficulty.HC then
 		selectedDifficulty = "HC"
@@ -250,7 +257,10 @@ button:SetScript("OnClick", function (self, btn, down)
 		selectedDifficulty = "N"
 	end
 	
-	
+	print("Search Tank: "..tostring(SearchedSpecialisiation.Tank))
+	print("Search Tank: "..tostring(SearchedSpecialisiation.Damage))
+	print("Search Tank: "..tostring(SearchedSpecialisiation.Heal))
+
 	if SearchedSpecialisiation.Tank and not SearchedSpecialisiation.Damage and not SearchedSpecialisiation.Heal then
 		for i=1, channelCount do 
 			local id, name = GetChannelName(i);
@@ -292,6 +302,15 @@ button:SetScript("OnClick", function (self, btn, down)
 			local id, name = GetChannelName(i);
 			if id ~= 0 then
 				SendChatMessage("LFM  "..selectedInstance.." "..selectedGroupSize.." "..selectedDifficulty.." "..LootRulesString.." Needed: Heal, DPS and Go!", "CHANNEL", "COMMON", i)
+			end
+		end
+	end
+	
+	if not SearchedSpecialisiation.Tank and SearchedSpecialisiation.Damage and not SearchedSpecialisiation.Heal then
+		for i=1, channelCount do 
+			local id, name = GetChannelName(i);
+			if id ~= 0 then
+				SendChatMessage("LFM  "..selectedInstance.." "..selectedGroupSize.." "..selectedDifficulty.." "..LootRulesString.." Needed: DPS and Go!", "CHANNEL", "COMMON", i)
 			end
 		end
 	end
