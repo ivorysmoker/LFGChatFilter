@@ -628,6 +628,8 @@ local function eventHandler(self, event, msg, sender, _, chanString, _, _, _, ch
 			local pGearScore = GearScore_GetScore(playerName, "player")
 			LFGChatFilter_InterfaceSlider:SetValue(pGearScore)
 			getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'Text'):SetText(tostring(pGearScore));
+			
+			LFG_Settings.gearscore = LFGChatFilter_InterfaceSlider:GetValue()
 			--getglobal(LFGChatFilter_InterfaceSlider:GetName() .. 'High'):SetText(tostring(pGearScore));
 
 		else
