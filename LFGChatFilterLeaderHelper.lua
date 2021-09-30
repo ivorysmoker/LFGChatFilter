@@ -257,9 +257,9 @@ button:SetScript("OnClick", function (self, btn, down)
 		selectedDifficulty = "N"
 	end
 	
-	print("Search Tank: "..tostring(SearchedSpecialisiation.Tank))
-	print("Search Tank: "..tostring(SearchedSpecialisiation.Damage))
-	print("Search Tank: "..tostring(SearchedSpecialisiation.Heal))
+	--print("Search Tank: "..tostring(SearchedSpecialisiation.Tank))
+	--print("Search Tank: "..tostring(SearchedSpecialisiation.Damage))
+	--print("Search Tank: "..tostring(SearchedSpecialisiation.Heal))
 
 	if SearchedSpecialisiation.Tank and not SearchedSpecialisiation.Damage and not SearchedSpecialisiation.Heal then
 		for i=1, channelCount do 
